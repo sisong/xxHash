@@ -161,6 +161,8 @@
 #  else
 #    define XSUM_ARCH "wasm/asmjs"
 #  endif
+#elif defined(__loongarch_lp64)
+#  define XSUM_ARCH "loongarch"
 #else
 #  define XSUM_ARCH "unknown"
 #endif
