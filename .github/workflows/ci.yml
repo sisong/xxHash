@@ -484,7 +484,9 @@ jobs:
       fail-fast: false  # 'false' means Don't stop matrix workflows even if some matrix failed.
       matrix:
         system: [
-          { os: macos-12     },
+          { os: macos-13     },
+          { os: macos-14     },
+          { os: macos-15     },
           { os: macos-latest },
         ]
     steps:
@@ -526,7 +528,7 @@ jobs:
           { os: windows-2022, vc: "VC++ 2022", clangcl: 'true', },
           { os: windows-2019, vc: "VC++ 2019", clangcl: 'true', },
         ]
-        arch: [ x64, Win32, ARM, ARM64 ]
+        arch: [ x64, Win32, ARM64 ]
 
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
