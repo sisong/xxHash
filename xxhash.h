@@ -2418,6 +2418,12 @@ static void* XXH_memcpy(void* dest, const void* src, size_t size)
 #  define XXH_NO_INLINE static
 #endif
 
+#if defined(XXH_INLINE_ALL)
+#  define XXH_STATIC XXH_FORCE_INLINE
+#else
+#  define XXH_STATIC static
+#endif
+
 #if XXH3_INLINE_SECRET
 #  define XXH3_WITH_SECRET_INLINE XXH_FORCE_INLINE
 #else
@@ -3458,7 +3464,7 @@ static xxh_u64 XXH64_avalanche(xxh_u64 hash)
  * @return The finalized hash
  * @see XXH32_finalize().
  */
-static XXH_PUREF xxh_u64
+XXH_STATIC XXH_PUREF xxh_u64
 XXH64_finalize(xxh_u64 hash, const xxh_u8* ptr, size_t len, XXH_alignment align)
 {
     if (ptr==NULL) XXH_ASSERT(len == 0);
