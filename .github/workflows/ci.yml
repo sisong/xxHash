@@ -624,7 +624,7 @@ jobs:
       - name: mingw64
         if: ${{ matrix.msystem == 'mingw64' }}
         run: |
-          PATH=/mingw64/bin:$PATH /mingw32/bin/mingw32-make clean test MOREFLAGS=-Werror
+          PATH=/mingw64/bin:$PATH /mingw32/bin/mingw32-make clean test gcc-og-test MOREFLAGS=-Werror
           PATH=/mingw64/bin:$PATH /mingw32/bin/mingw32-make -C tests/bench
           # Abort if result of "file ./xxhsum.exe" doesn't contain 'x86-64'.
           # Expected output is "./xxhsum.exe: PE32+ executable (console) x86-64, for MS Windows"
