@@ -3844,17 +3844,6 @@ XXH_PUBLIC_API XXH64_hash_t XXH64_hashFromCanonical(XXH_NOESCAPE const XXH64_can
 #ifdef XXH_DOXYGEN
 /*!
  * @ingroup tuning
- * @brief Overrides the vectorization implementation chosen for XXH3.
- *
- * Can be defined to 0 to disable SIMD or any of the values mentioned in
- * @ref XXH_VECTOR_TYPE.
- *
- * If this is not defined, it uses predefined macros to determine the best
- * implementation.
- */
-#  define XXH_VECTOR XXH_SCALAR
-/*!
- * @ingroup tuning
  * @brief Possible values for @ref XXH_VECTOR.
  *
  * Note that these are actually implemented as macros.
@@ -3881,6 +3870,17 @@ enum XXH_VECTOR_TYPE /* fake enum */ {
     XXH_SVE    = 6,  /*!< SVE for some ARMv8-A and ARMv9-A */
     XXH_LSX    = 7,  /*!< LSX (128-bit SIMD) for LoongArch64 */
 };
+/*!
+ * @ingroup tuning
+ * @brief Overrides the vectorization implementation chosen for XXH3.
+ *
+ * Can be defined to 0 to disable SIMD or any of the values mentioned in
+ * @ref XXH_VECTOR_TYPE.
+ *
+ * If this is not defined, it uses predefined macros to determine the best
+ * implementation.
+ */
+#  define XXH_VECTOR XXH_SCALAR
 /*!
  * @ingroup tuning
  * @brief Selects the minimum alignment for XXH3's accumulators.
