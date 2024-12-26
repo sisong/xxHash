@@ -89,7 +89,8 @@
 /* Try to detect the architecture. */
 #if defined(XSUM_ARCH_X86)
 #  if defined(XXHSUM_DISPATCH)
-#    define XSUM_ARCH XSUM_ARCH_X86 " autoVec"
+     const char* XSUM_autox86(void);
+#    define XSUM_ARCH XSUM_autox86()
 #  elif defined(__AVX512F__)
 #    define XSUM_ARCH XSUM_ARCH_X86 " + AVX512"
 #  elif defined(__AVX2__)

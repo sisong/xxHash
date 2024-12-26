@@ -81,6 +81,7 @@ LIBXXH = libxxhash.$(SHARED_EXT_VER)
 XXHSUM_SRC_DIR = cli
 XXHSUM_SPLIT_SRCS = $(XXHSUM_SRC_DIR)/xxhsum.c \
                     $(XXHSUM_SRC_DIR)/xsum_os_specific.c \
+                    $(XXHSUM_SRC_DIR)/xsum_arch.c \
                     $(XXHSUM_SRC_DIR)/xsum_output.c \
                     $(XXHSUM_SRC_DIR)/xsum_sanity_check.c \
                     $(XXHSUM_SRC_DIR)/xsum_bench.c
