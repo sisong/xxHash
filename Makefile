@@ -151,7 +151,7 @@ $(LIBXXH): LDFLAGS += -shared
 ifeq (,$(filter Windows%,$(OS)))
 $(LIBXXH): CFLAGS += -fPIC
 endif
-ifeq ($(DISPATCH),1)
+ifeq ($(LIBXXH_DISPATCH),1)
 $(LIBXXH): xxh_x86dispatch.c
 endif
 $(LIBXXH): xxhash.c
@@ -632,7 +632,7 @@ install_libxxhash.includes:
 	$(Q)$(INSTALL) -d -m 755 $(DESTDIR)$(INCLUDEDIR)   # includes
 	$(Q)$(INSTALL_DATA) xxhash.h $(DESTDIR)$(INCLUDEDIR)
 	$(Q)$(INSTALL_DATA) xxh3.h $(DESTDIR)$(INCLUDEDIR) # for compatibility, will be removed in v0.9.0
-ifeq ($(DISPATCH),1)
+ifeq ($(LIBXXH_DISPATCH),1)
 	$(Q)$(INSTALL_DATA) xxh_x86dispatch.h $(DESTDIR)$(INCLUDEDIR)
 endif
 
