@@ -1110,6 +1110,23 @@ XXH_PUBLIC_API XXH_PUREF XXH64_hash_t XXH64_hashFromCanonical(XXH_NOESCAPE const
  *
  * The API supports one-shot hashing, streaming mode, and custom secrets.
  */
+
+/*!
+ * @ingroup tuning
+ * @brief Possible values for @ref XXH_VECTOR.
+ *
+ * Unless set explicitly, determined automatically.
+ */
+#  define XXH_SCALAR 0 /*!< Portable scalar version */
+#  define XXH_SSE2   1 /*!< SSE2 for Pentium 4, Opteron, all x86_64. */
+#  define XXH_AVX2   2 /*!< AVX2 for Haswell and Bulldozer */
+#  define XXH_AVX512 3 /*!< AVX512 for Skylake and Icelake */
+#  define XXH_NEON   4 /*!< NEON for most ARMv7-A, all AArch64, and WASM SIMD128 */
+#  define XXH_VSX    5 /*!< VSX and ZVector for POWER8/z13 (64-bit) */
+#  define XXH_SVE    6 /*!< SVE for some ARMv8-A and ARMv9-A */
+#  define XXH_LSX    7 /*!< LSX (128-bit SIMD) for LoongArch64 */
+
+
 /*-**********************************************************************
 *  XXH3 64-bit variant
 ************************************************************************/
@@ -3844,34 +3861,6 @@ XXH_PUBLIC_API XXH64_hash_t XXH64_hashFromCanonical(XXH_NOESCAPE const XXH64_can
 #ifdef XXH_DOXYGEN
 /*!
  * @ingroup tuning
- * @brief Possible values for @ref XXH_VECTOR.
- *
- * Note that these are actually implemented as macros.
- *
- * If this is not defined, it is detected automatically.
- * internal macro XXH_X86DISPATCH overrides this.
- */
-enum XXH_VECTOR_TYPE /* fake enum */ {
-    XXH_SCALAR = 0,  /*!< Portable scalar version */
-    XXH_SSE2   = 1,  /*!<
-                      * SSE2 for Pentium 4, Opteron, all x86_64.
-                      *
-                      * @note SSE2 is also guaranteed on Windows 10, macOS, and
-                      * Android x86.
-                      */
-    XXH_AVX2   = 2,  /*!< AVX2 for Haswell and Bulldozer */
-    XXH_AVX512 = 3,  /*!< AVX512 for Skylake and Icelake */
-    XXH_NEON   = 4,  /*!<
-                       * NEON for most ARMv7-A, all AArch64, and WASM SIMD128
-                       * via the SIMDeverywhere polyfill provided with the
-                       * Emscripten SDK.
-                       */
-    XXH_VSX    = 5,  /*!< VSX and ZVector for POWER8/z13 (64-bit) */
-    XXH_SVE    = 6,  /*!< SVE for some ARMv8-A and ARMv9-A */
-    XXH_LSX    = 7,  /*!< LSX (128-bit SIMD) for LoongArch64 */
-};
-/*!
- * @ingroup tuning
  * @brief Overrides the vectorization implementation chosen for XXH3.
  *
  * Can be defined to 0 to disable SIMD or any of the values mentioned in
@@ -3895,14 +3884,6 @@ enum XXH_VECTOR_TYPE /* fake enum */ {
 
 /* Actual definition */
 #ifndef XXH_DOXYGEN
-#  define XXH_SCALAR 0
-#  define XXH_SSE2   1
-#  define XXH_AVX2   2
-#  define XXH_AVX512 3
-#  define XXH_NEON   4
-#  define XXH_VSX    5
-#  define XXH_SVE    6
-#  define XXH_LSX    7
 #endif
 
 #ifndef XXH_VECTOR    /* can be defined on command line */
