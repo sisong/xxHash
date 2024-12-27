@@ -157,7 +157,7 @@ The following macros can be set at compilation time to modify `libxxhash`'s beha
                          Defining this macro to 1 will mark all internal functions as `static`, allowing the compiler to decide whether to inline a function or not.
                          This is very useful when optimizing for smallest binary size,
                          and is automatically defined when compiling with `-O0`, `-Os`, `-Oz`, or `-fno-inline` on GCC and Clang.
-                         This might also increase performance depending on compiler and architecture.
+                         It may also be required to successfully compile using `-Og`, depending on compiler version.
 - `XXH_SIZE_OPT`: `0`: default, optimize for speed
                   `1`: default for `-Os` and `-Oz`: disables some speed hacks for size optimization
                   `2`: makes code as small as possible, performance may cry
