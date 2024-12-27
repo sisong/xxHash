@@ -1,6 +1,6 @@
 /*
  * xxhsum - Command line interface for xxhash algorithms
- * Copyright (C) 2013-2021 Yann Collet
+ * Copyright (C) 2013-2024 Yann Collet
  *
  * GPL v2 License
  *
@@ -29,8 +29,6 @@ int g_xsumarch_avoid_empty_unit = 0;
 #if defined(XXHSUM_DISPATCH)
 
 #include "../xxh_x86dispatch.h"
-#define XXH_INLINE_ALL /* XXH_* vector types */
-#include "../xxhash.h"
 
 const char* XSUM_autox86(void)
 {
