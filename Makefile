@@ -361,7 +361,7 @@ clangtest: clean
 .PHONY: gcc-og-test
 gcc-og-test: clean
 	@echo ---- test gcc -Og compilation ----
-	CFLAGS="-Og -Wall -Wextra -Wundef -Wshadow -Wcast-align -Werror -fPIC" MOREFLAGS="-Werror" $(MAKE) all
+	CFLAGS="-Og -Wall -Wextra -Wundef -Wshadow -Wcast-align -Werror -fPIC" CPPFLAGS="-DXXH_NO_INLINE_HINTS" MOREFLAGS="-Werror" $(MAKE) all
 
 .PHONY: cxxtest
 cxxtest: clean
