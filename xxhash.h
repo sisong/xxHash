@@ -3236,27 +3236,29 @@ XXH32_update(XXH32_state_t* state, const void* input, size_t len)
         return XXH_OK;
     }
 
+    state->total_len_32 += (XXH32_hash_t)len;
+    state->large_len |= (XXH32_hash_t)((len>=16) | (state->total_len_32>=16));
+
+    XXH_ASSERT(state->bufferedSize < sizeof(state->buffer));
+    if (len < sizeof(state->buffer) - state->bufferedSize)  {   /* fill in tmp buffer */
+        XXH_memcpy(state->buffer + state->bufferedSize, input, len);
+        state->bufferedSize += (XXH32_hash_t)len;
+        return XXH_OK;
+    }
+
     {   const xxh_u8* xinput = (const xxh_u8*)input;
         const xxh_u8* const bEnd = xinput + len;
 
-        state->total_len_32 += (XXH32_hash_t)len;
-        state->large_len |= (XXH32_hash_t)((len>=16) | (state->total_len_32>=16));
-
-        if (len < sizeof(state->buffer) - state->bufferedSize)  {   /* fill in tmp buffer */
-            XXH_memcpy(state->buffer + state->bufferedSize, xinput, len);
-            state->bufferedSize += (XXH32_hash_t)len;
-            return XXH_OK;
-        }
-
-        if (state->bufferedSize) {   /* tmp buffer is full */
+        if (state->bufferedSize) {   /* non-empty buffer: complete first */
             XXH_memcpy(state->buffer + state->bufferedSize, xinput, sizeof(state->buffer) - state->bufferedSize);
-            /* Process the tmp buffer */
-            (void)XXH32_consumeLong(state->acc, state->buffer, sizeof(state->buffer), XXH_aligned);
             xinput += sizeof(state->buffer) - state->bufferedSize;
+            /* then process one round */
+            (void)XXH32_consumeLong(state->acc, state->buffer, sizeof(state->buffer), XXH_aligned);
             state->bufferedSize = 0;
         }
 
-        if (xinput + sizeof(state->buffer) <= bEnd) {
+        XXH_ASSERT(xinput <= bEnd);
+        if ((size_t)(bEnd - xinput) >= sizeof(state->buffer)) {
             /* Process the remaining data */
             xinput = XXH32_consumeLong(state->acc, xinput, (size_t)(bEnd - xinput), XXH_unaligned);
         }
@@ -3730,26 +3732,28 @@ XXH64_update (XXH_NOESCAPE XXH64_state_t* state, XXH_NOESCAPE const void* input,
         return XXH_OK;
     }
 
+    state->total_len += len;
+
+    XXH_ASSERT(state->bufferedSize <= sizeof(state->buffer));
+    if (len < sizeof(state->buffer) - state->bufferedSize)  {   /* fill in tmp buffer */
+        XXH_memcpy(state->buffer + state->bufferedSize, input, len);
+        state->bufferedSize += (XXH32_hash_t)len;
+        return XXH_OK;
+    }
+
     {   const xxh_u8* xinput = (const xxh_u8*)input;
         const xxh_u8* const bEnd = xinput + len;
 
-        state->total_len += (XXH32_hash_t)len;
-
-        if (len < sizeof(state->buffer) - state->bufferedSize)  {   /* fill in tmp buffer */
-            XXH_memcpy(state->buffer + state->bufferedSize, xinput, len);
-            state->bufferedSize += (XXH32_hash_t)len;
-            return XXH_OK;
-        }
-
-        if (state->bufferedSize) {   /* tmp buffer is full */
+        if (state->bufferedSize) {   /* non-empty buffer => complete first */
             XXH_memcpy(state->buffer + state->bufferedSize, xinput, sizeof(state->buffer) - state->bufferedSize);
-            /* Process the tmp buffer */
-            (void)XXH64_consumeLong(state->acc, state->buffer, sizeof(state->buffer), XXH_aligned);
             xinput += sizeof(state->buffer) - state->bufferedSize;
+            /* and process one round */
+            (void)XXH64_consumeLong(state->acc, state->buffer, sizeof(state->buffer), XXH_aligned);
             state->bufferedSize = 0;
         }
 
-        if (xinput + sizeof(state->buffer) <= bEnd) {
+        XXH_ASSERT(xinput <= bEnd);
+        if ((size_t)(bEnd - xinput) >= sizeof(state->buffer)) {
             /* Process the remaining data */
             xinput = XXH64_consumeLong(state->acc, xinput, (size_t)(bEnd - xinput), XXH_unaligned);
         }
